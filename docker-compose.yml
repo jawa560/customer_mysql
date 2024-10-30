@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      MYSQL_CONNECTION_STRING: "server=mysql9;database=crud;user=root;password=wind2009;"
+      MYSQL_CONNECTION_STRING: "server=mysql9;port=3306;database=crud;user=root;password=wind2009;"
     ports:
       - "7020:8080"
     networks:

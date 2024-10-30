@@ -7,8 +7,12 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Net;
+using DotNetEnv;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,8 +105,13 @@ builder.Services.AddAuthentication(options =>
 });
 
 // Configure MySQL database
+
+// 讀取 .env 文件
+//builder.Configuration.AddEnvironmentVariables(prefix: "DOTNET_");
+
 // 讀取環境變數
-builder.Configuration.AddEnvironmentVariables();
+//builder.Configuration.AddEnvironmentVariables();
+
 
 // 輸出 MYSQL_CONNECTION_STRING 的內容
 var connectionString = builder.Configuration["MYSQL_CONNECTION_STRING"];
@@ -114,6 +123,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     //    new MySqlServerVersion(new Version(8, 0, 21))));
     options.UseMySql(builder.Configuration[key: "MYSQL_CONNECTION_STRING"],
      new MySqlServerVersion(new Version(8, 0, 21))));
+
+Console.WriteLine($"MYSQL_CONNECTION_STRING: {connectionString}");
 
 // Add authorization policies
 builder.Services.AddAuthorization(options =>
